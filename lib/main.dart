@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'question.dart';
+import 'answer.dart';
 
 void main() => runApp(QuizzApp());
 
@@ -9,7 +10,24 @@ class QuizzApp extends StatefulWidget {
 }
 
 class _QuizzAppState extends State<QuizzApp> {
-  var _questions = ['Question 1', 'Question 2', 'Question 3', 'Question 4'];
+  var _questions = [
+    {
+      'questionText': "What's your favourite color?",
+      'answers': ['Black', 'Red', 'Green', 'White'],
+    },
+    {
+      'questionText': "What's your favourite food?",
+      'answers': ['Biscuits', 'Tomatoes', 'Pasta', 'Hamburger'],
+    },
+    {
+      'questionText': "What's your favourite car?",
+      'answers': ['BMW', 'Renault', 'Toyota', 'Mercedes'],
+    },
+    {
+      'questionText': "What's your favourite phone?",
+      'answers': ['Oppo', 'Huawei', 'iPhone', 'Samsung'],
+    },
+  ];
   int _questionIndex = 0;
 
   void _answerQuestion() {
@@ -32,35 +50,14 @@ class _QuizzAppState extends State<QuizzApp> {
           backgroundColor: Colors.blueGrey,
         ),
         body: Column(children: [
-          Question(_questions[_questionIndex]),
-          ElevatedButton(
-            onPressed: _answerQuestion,
-            child: Text('Answer A'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blueGrey,
-            ),
+          Question(
+            (_questions[_questionIndex]['questionText'] as String),
           ),
-          ElevatedButton(
-            onPressed: _answerQuestion,
-            child: Text('Answer B'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blueGrey,
-            ),
-          ),
-          ElevatedButton(
-            onPressed: _answerQuestion,
-            child: Text('Answer C'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blueGrey,
-            ),
-          ),
-          ElevatedButton(
-            onPressed: _answerQuestion,
-            child: Text('Answer D'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blueGrey,
-            ),
-          ),
+          ...(_questions[_questionIndex]['answers'] as List<String>).map(
+            (answer) {
+              return Answer(_answerQuestion, answer);
+            },
+          ).toList()
         ]),
       ),
     );
