@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'question.dart';
-import 'answer.dart';
+import 'quiz.dart';
+import 'result.dart';
 
 void main() => runApp(QuizzApp());
 
@@ -10,7 +10,7 @@ class QuizzApp extends StatefulWidget {
 }
 
 class _QuizzAppState extends State<QuizzApp> {
-  var _questions = [
+  final _questions = [
     {
       'questionText': "What's your favourite color?",
       'answers': ['Black', 'Red', 'Green', 'White'],
@@ -29,6 +29,12 @@ class _QuizzAppState extends State<QuizzApp> {
     },
   ];
   int _questionIndex = 0;
+
+  void _restart() {
+    setState(() {
+      _questionIndex = 0;
+    });
+  }
 
   void _answerQuestion() {
     setState(() {
@@ -49,16 +55,12 @@ class _QuizzAppState extends State<QuizzApp> {
           title: const Text('Quizz App'),
           backgroundColor: Colors.blueGrey,
         ),
-        body: Column(children: [
-          Question(
-            (_questions[_questionIndex]['questionText'] as String),
-          ),
-          ...(_questions[_questionIndex]['answers'] as List<String>).map(
-            (answer) {
-              return Answer(_answerQuestion, answer);
-            },
-          ).toList()
-        ]),
+        body: _questionIndex < _questions.length - 1
+            ? Quiz(
+                answerQuestion: _answerQuestion,
+                questions: _questions,
+                questionIndex: _questionIndex)
+            : Result(_restart, 'Restart the game'),
       ),
     );
   }
