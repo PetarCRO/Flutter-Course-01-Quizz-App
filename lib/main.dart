@@ -10,12 +10,18 @@ class QuizzApp extends StatefulWidget {
 }
 
 class _QuizzAppState extends State<QuizzApp> {
+  int _totalScore = 0;
   final _questions = [
     {
       'questionText': "What's your favourite color?",
-      'answers': ['Black', 'Red', 'Green', 'White'],
+      'answers': [
+        {'text': 'Black', 'score': 10},
+        {'text': 'Red', 'score': 7},
+        {'text': 'Green', 'score': 3},
+        {'text': 'White', 'score': 1},
+      ],
     },
-    {
+    /*{
       'questionText': "What's your favourite food?",
       'answers': ['Biscuits', 'Tomatoes', 'Pasta', 'Hamburger'],
     },
@@ -26,17 +32,19 @@ class _QuizzAppState extends State<QuizzApp> {
     {
       'questionText': "What's your favourite phone?",
       'answers': ['Oppo', 'Huawei', 'iPhone', 'Samsung'],
-    },
+    },*/
   ];
   int _questionIndex = 0;
 
   void _restart() {
     setState(() {
       _questionIndex = 0;
+      _totalScore = 0;
     });
   }
 
-  void _answerQuestion() {
+  void _answerQuestion(int score) {
+    _totalScore += score;
     setState(() {
       if (_questionIndex < _questions.length - 1)
         _questionIndex++;
@@ -60,7 +68,7 @@ class _QuizzAppState extends State<QuizzApp> {
                 answerQuestion: _answerQuestion,
                 questions: _questions,
                 questionIndex: _questionIndex)
-            : Result(_restart, 'Restart the game'),
+            : Result(_restart, 'Restart the game', _totalScore),
       ),
     );
   }
